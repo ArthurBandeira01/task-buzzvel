@@ -22,6 +22,6 @@ class Task extends Model
 
     public function attachmentFile()
     {
-        return $this->belongsTo(AttachmentFile::class, 'attachmentFileId');
+        return $this->belongsTo(AttachmentFile::class, 'attachmentFileId', 'attachmentFileId');
     }
 }

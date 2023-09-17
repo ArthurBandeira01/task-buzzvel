@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests\TaskRequest;
 use App\Models\Task;
 use App\Models\AttachmentFile;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 
 class TasksController extends Controller
@@ -25,11 +27,7 @@ class TasksController extends Controller
 
         $completed = (isset($inputs['completed'])) ? 1 : 0;
 
-        $originaName = pathinfo($inputs['attachmentFile']->getClientOriginalName(), PATHINFO_FILENAME);
-
-        $fileName = $originaName.date('ymdHms').'.'.$inputs['attachmentFile']->extension();
-
-        $inputs['attachmentFile']->move(public_path('attachmentFile'), $fileName);
+        $this->checkFile($inputs['attachmentFile']);
 
         $attachmentFile = AttachmentFile::create([
             'attachmentFile' => $inputs['attachmentFile'],
@@ -43,33 +41,54 @@ class TasksController extends Controller
             'completed' => $completed
         ]);
 
+        return redirect()->route('tasks.index');
+    }
+
+    public function show($id)
+    {
+        $task = Task::where('taskId', $id)->first();
+
+        return view('show', compact('task'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $inputs = $request->all();
+
+        $completed = (isset($inputs['completed'])) ? 1 : 0;
+
+        $this->checkFile($inputs['attachmentFile']);
+
+        $attachmentFile = AttachmentFile::where('attachmentFileId', $inputs['attachmentFileId'])->update([
+            'attachmentFile' => $inputs['attachmentFile'],
+        ]);
+
+        $data = [
+            'attachmentFileId' => $attachmentFile,
+            'title' => $inputs['title'],
+            'user' => $inputs['user'],
+            'description' => $inputs['description'],
+            'completed' => $completed
+        ];
+
+        Task::where('taskId', $id)->update($data);
+
+        return redirect()->route('tasks.index')->with('success', 'Task updated sucessfully!');
+    }
+
+    public function destroy($id)
+    {
+        $task = Task::where('taskId', $id)->delete();
+
         return redirect()->route('tasks.index')->with('success', 'Task deleted successfully.');
     }
 
-    public function show(string $task)
+    public function checkFile($file)
     {
+        $originaName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
 
-    }
+        $fileName = $originaName.date('ymdHms').'.'.$file->extension();
 
-    public function edit(string $task)
-    {
-        $product = Task::findOrFail($task);
-
-        return view('tasks.edit', compact('task'));
-    }
-
-
-    public function update(TaskRequest $request, string $task)
-    {
-
-    }
-
-    public function destroy(string $task)
-    {
-        $task = Task::findOrFail($task);
-
-        $task->delete();
-
-        return redirect()->route('tasks.index')->with('success', 'Task deleted successfully.');
+        $file->move(public_path('attachmentFile'), $fileName);
     }
 }

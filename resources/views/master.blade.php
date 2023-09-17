@@ -11,11 +11,55 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
         <script src="https://kit.fontawesome.com/a7cf753026.js" crossorigin="anonymous"></script>
         <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <link rel="stylesheet" href="{{URL::asset('css/style.css')}}">
     </head>
     <body class="antialiased">
-        @include('success')
-        @include('error')
         @yield('content')
+        @yield('script')
+        <div class="adjust cursor-pointer text-xl" onclick="darkMode()" id="adjust">
+            <i class="fas fa-adjust" id="adjust-icon"></i>
+        </div>
     </body>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function darkMode(){
+            const element = document.getElementById("adjust-icon");
+            element.classList.toggle("adjust-check");
+        }
+
+        const darkMode = document.querySelector('#adjust');
+
+        darkMode.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode')
+        });
+
+        $(document).ready(function() {
+            const isDarkMode = localStorage.getItem('darkMode') === 'true';
+
+            if (isDarkMode) {
+                enableDarkMode();
+            }
+
+            // Alternar entre o modo claro e o modo escuro quando o botão for clicado
+            $('#toggleDarkMode').on('click', function() {
+                if ($('body').hasClass('dark')) {
+                    disableDarkMode();
+                } else {
+                    enableDarkMode();
+                }
+            });
+
+            function enableDarkMode() {
+                $('body').addClass('dark-mode');
+                localStorage.setItem('darkMode', 'true');
+            }
+
+            function disableDarkMode() {
+                $('body').removeClass('dark-mode');
+                localStorage.setItem('darkMode', 'false');
+            }
+        });
+
+    </script>
 </html>
