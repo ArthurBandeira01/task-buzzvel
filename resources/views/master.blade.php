@@ -17,13 +17,13 @@
     <body class="antialiased">
         @yield('content')
         @yield('script')
-        <div class="adjust cursor-pointer text-xl" onclick="darkMode()" id="adjust">
+        <div class="adjust cursor-pointer text-xl" onclick="checkNightIcon()" id="adjust">
             <i class="fas fa-adjust" id="adjust-icon"></i>
         </div>
     </body>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        function darkMode(){
+        function checkNightIcon(){
             const element = document.getElementById("adjust-icon");
             element.classList.toggle("adjust-check");
         }
@@ -31,7 +31,8 @@
         const darkMode = document.querySelector('#adjust');
 
         darkMode.addEventListener('click', () => {
-            document.body.classList.toggle('dark-mode')
+            document.body.classList.toggle('dark-mode');
+            localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
         });
 
         $(document).ready(function() {
@@ -43,7 +44,7 @@
 
             // Alternar entre o modo claro e o modo escuro quando o botão for clicado
             $('#toggleDarkMode').on('click', function() {
-                if ($('body').hasClass('dark')) {
+                if ($('body').hasClass('dark-mode')) {
                     disableDarkMode();
                 } else {
                     enableDarkMode();
@@ -60,6 +61,5 @@
                 localStorage.setItem('darkMode', 'false');
             }
         });
-
     </script>
 </html>

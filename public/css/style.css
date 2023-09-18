@@ -33,7 +33,10 @@ button{
 
 .dark-mode {
     background-color: #212121;
+    color: #fff;
 }
 .dark-mode .text-night {
     color: #fff !important;
 }
+
+.text-dark{color: #333 !important;}

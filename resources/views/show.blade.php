@@ -35,7 +35,7 @@
                 <div class="flex mt-3">
                     <input id="default-checkbox" type="checkbox" name="completed" {{ $task->completed === 1 ? 'checked' : '' }}
                     class="w-4 h-4 mt-1 text-blue-600 rounded focus:outline-none">
-                    <label for="default-checkbox" class="ml-2 text-sm font-medium">Task completed</label>
+                    <label for="default-checkbox" class="ml-2 text-sm font-medium text-dark">Task completed</label>
                 </div>
                 <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Update Task</button>
             </div>
