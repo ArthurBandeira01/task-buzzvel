@@ -17,7 +17,7 @@ class TaskRequest extends FormRequest
         return [
             'title' => 'required|string',
             'description' => 'required|string',
-            'attachmentFile' => 'required|file|mimes:jpg,png,webp,pdf,doc'
+            'attachmentFile' => 'required|file|mimes:jpg,png,webp,pdf,doc,txt'
         ];
     }
 

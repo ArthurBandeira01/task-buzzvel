@@ -40,7 +40,8 @@
                             @endif
                         </td>
                         <td class="text-center flex px-6 py-3">
-                            <div class="text-xl cursor-pointer" onclick="seeTask()"><i class="fas fa-eye text-yellow-500"></i></div>
+                            <a class="text-xl" href="{{URL::asset('attachmentFile/' . $task->attachmentFile->attachmentFile)}}" target="_blank"><i class="fas fa-image"></i></a>
+                            <div class="text-xl cursor-pointer ml-4" onclick="seeTask('{{json_encode($task)}}')"><i class="fas fa-eye text-yellow-500"></i></div>
                             <a class="text-xl ml-4" href="{{route('tasks.show', ['task' => $task->taskId])}}"><i class="fas fa-edit text-blue-500"></i></a>
                             <a class="text-xl ml-4" href="{{route('tasks.destroy', ['task' => $task->taskId])}}">
                                 <form method="POST" action="{{ route('tasks.destroy', ['task' => $task->taskId]) }}" onsubmit="return confirm('Are you sure you want to delete this user?');">
@@ -63,15 +64,17 @@
 @endsection
 @section('script')
     <script>
-        function seeTask() {
+        function seeTask(taskData) {
+            let task = JSON.parse(taskData);
+            let createdTask = moment(task.created_at).format('MM/DD/YYYY');
             Swal.fire({
                 html: '<div class="text-left mt-4"' +
-                '<p class="mt-4">ID: {{$task->taskId}}</p>' +
-                '<p class="mt-4">Title: {{$task->title}}</p>' +
-                '<p class="mt-4">User: {{$task->user}}</p>' +
-                '<p class="mt-4">Description: {{$task->description}}</p>' +
-                '<p class="mt-4">Create: {{formatDate($task->created_at)}}</p>' +
-                '</div>',
+                    '<p class="mt-4">ID: ' + task.taskId + '</p>' +
+                    '<p class="mt-4">Title: ' + task.title + '</p>' +
+                    '<p class="mt-4">User: ' + task.user + '</p>' +
+                    '<p class="mt-4">Description: ' + task.description + '</p>' +
+                    '<p class="mt-4">Create: ' + createdTask + '</p>' +
+                    '</div>',
                 showCloseButton: true,
                 confirmButtonText: 'To back',
                 confirmButtonAriaLabel: 'To back'

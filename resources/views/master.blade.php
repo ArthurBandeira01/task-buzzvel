@@ -22,10 +22,14 @@
         </div>
     </body>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <script>
         function checkNightIcon(){
-            const element = document.getElementById("adjust-icon");
-            element.classList.toggle("adjust-check");
+            if(localStorage.getItem('darkMode') === 'false') {
+                $("#adjust-icon").addClass('adjust-check');
+            }else{
+                $("#adjust-icon").removeClass('adjust-check');
+            }
         }
 
         const darkMode = document.querySelector('#adjust');

@@ -27,10 +27,10 @@ class TasksController extends Controller
 
         $completed = (isset($inputs['completed'])) ? 1 : 0;
 
-        $this->checkFile($inputs['attachmentFile']);
+        $fileName = $this->checkFile($inputs['attachmentFile']);
 
         $attachmentFile = AttachmentFile::create([
-            'attachmentFile' => $inputs['attachmentFile'],
+            'attachmentFile' => $fileName,
         ]);
 
         $task = Task::create([
@@ -57,10 +57,10 @@ class TasksController extends Controller
 
         $completed = (isset($inputs['completed'])) ? 1 : 0;
 
-        $this->checkFile($inputs['attachmentFile']);
+        $fileName = $this->checkFile($inputs['attachmentFile']);
 
         $attachmentFile = AttachmentFile::where('attachmentFileId', $inputs['attachmentFileId'])->update([
-            'attachmentFile' => $inputs['attachmentFile'],
+            'attachmentFile' => $fileName,
         ]);
 
         $data = [
@@ -90,5 +90,7 @@ class TasksController extends Controller
         $fileName = $originaName.date('ymdHms').'.'.$file->extension();
 
         $file->move(public_path('attachmentFile'), $fileName);
+
+        return $fileName;
     }
 }
