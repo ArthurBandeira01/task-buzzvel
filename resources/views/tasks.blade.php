@@ -63,6 +63,7 @@
 </div>
 @endsection
 @section('script')
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         function seeTask(taskData) {
             let task = JSON.parse(taskData);
@@ -80,5 +81,16 @@
                 confirmButtonAriaLabel: 'To back'
             });
         }
+
+        $(document).ready(function() {
+            $("#addFileInput").click(function() {
+                var newInput = $("#fileInputsContainer input[type='file']:last").clone().val('');
+
+                $("#fileInputsContainer").append(newInput);
+
+                $("#fileInputsContainer").append($("#addFileInput"));
+                {{--  $("#fileInputsContainer").append($(".container-add-file"));  --}}
+            });
+        });
     </script>
 @endsection

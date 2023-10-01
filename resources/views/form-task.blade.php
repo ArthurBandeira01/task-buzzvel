@@ -17,9 +17,12 @@
         placeholder="Task description..." minlength="10" required></textarea>
     </div>
 
-    <div class="mb-3">
+    <div class="mb-3" id="fileInputsContainer">
         <input class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold
-        file:bg-red-50 file:text-red-700 hover:file:bg-red-100 cursor-pointer" type="file" name="attachmentFile" id="attachmentFile" required>
+        file:bg-red-50 file:text-red-700 hover:file:bg-red-100 cursor-pointer mb-5" type="file" name="attachmentFile[]" multiple id="attachmentFile" required>
+        <div class="container-add-file text-right">
+            <button type="button" id="addFileInput" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-1 mt-5 rounded">Adicionar Foto</button>
+        </div>
     </div>
 
     <div class="flex justify-between mt-5">

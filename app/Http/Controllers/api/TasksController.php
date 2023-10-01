@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\TaskResource;
 use Illuminate\Http\Request;
 use App\Http\Requests\TaskRequest;
 use App\Models\Task;
@@ -17,29 +18,39 @@ class TasksController extends Controller
     public function index()
     {
         $tasks = Task::orderby('taskId', 'desc')->paginate(12);
+        // $tasks = Task::paginate();
+
+        // return TaskResource::collection($tasks);
 
         return view('tasks', ['tasks' => $tasks]);
     }
 
     public function store(TaskRequest $request)
     {
-        $inputs = $request->all();
-
+        $inputs    = $request->all();
         $completed = (isset($inputs['completed'])) ? 1 : 0;
 
-        $fileName = $this->checkFile($inputs['attachmentFile']);
+        $attachmentFileIds = [];
 
-        $attachmentFile = AttachmentFile::create([
-            'attachmentFile' => $fileName,
-        ]);
+        foreach ($inputs['attachmentFile'] as $file) {
+            $fileName = $this->checkFile($file);
 
-        $task = Task::create([
-            'attachmentFileId' => $attachmentFile->id,
-            'title' => $inputs['title'],
-            'user' => $inputs['user'],
-            'description' => $inputs['description'],
-            'completed' => $completed
-        ]);
+            $attachmentFile = AttachmentFile::create([
+                'attachmentFile' => $fileName,
+            ]);
+
+            $attachmentFileIds[] = $attachmentFile->id;
+        }
+
+        foreach ($attachmentFileIds as $attachmentFileId) {
+            $task = Task::create([
+                'attachmentFileId' => $attachmentFileId,
+                'title' => $inputs['title'],
+                'user' => $inputs['user'],
+                'description' => $inputs['description'],
+                'completed' => $completed
+            ]);
+        }
 
         return redirect()->route('tasks.index');
     }
